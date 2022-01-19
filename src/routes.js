@@ -23,11 +23,12 @@ router.post('/authenticate', async (req, res) => {
             .then(response => response.data)
             .catch(() => res.status(404).send('Usuário não encontrado'))
 
+        if (!data) res.send('Usuário não encontrado').status(404)
 
         const isMatch = bcrypt.compareSync(password, data.password)
 
         if (!isMatch) {
-            res.status(401).send('Senha inválida')
+            res.status(404).send('Senha inválida')
         }
 
         const now = Math.floor(Date.now() / 1000)
@@ -50,14 +51,25 @@ router.post('/authenticate', async (req, res) => {
 })
 
 router.post('/validateToken', (req, res) => {
-    const { authorization } = req.headers
+    try {
+        const { authorization } = req.headers
 
-    console.log(authorization)
-    /// Continuar daqui //
-    // Implementar a autorização //
-    // Validar se o token é válido ou não //
+        if (!authorization) res.status(403).send("Token ausente")
 
-    res.send(true)
+        const tokenEncrypted = authorization.split([" "])[1]
+        const token = jwt.decode(tokenEncrypted)
+
+        const now = Math.floor(Date.now() / 1000)
+
+        if (now > token.exp) {
+            return res.status(403).send('Token Expirado')
+        }
+
+        res.send(true)
+
+    } catch {
+        res.send('Erro durante o processamento')
+    }
 })
 
 export default router;
