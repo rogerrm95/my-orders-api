@@ -4,7 +4,7 @@ import cors from 'cors'
 import routes from './routes.js'
 
 const app = express()
-const PORT = 8080
+const PORT = process.env.PORT
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -13,4 +13,4 @@ app.use(express.json({ extended: false }))
 
 app.use(routes)
 
-app.listen(PORT, () => console.log(`Running`))
+app.listen(PORT || 8080, () => console.log(`Running`))
