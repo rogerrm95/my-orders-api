@@ -21,9 +21,9 @@ router.post('/authenticate', async (req, res) => {
             )
         )
             .then(response => response.data)
-            .catch(() => res.json({ message: 'Usuário não encontrado' })).status(404)
+            .catch(() => res.status(404).json({ message: 'Usuário não encontrado' }))
 
-        if (!data) res.json({ message: 'Usuário não encontrado' }).status(404)
+        if (!data) res.status(404).json({ message: 'Usuário não encontrado' })
 
         const isMatch = bcrypt.compareSync(password, data.password)
 
