@@ -41,12 +41,12 @@ router.post('/authenticate', async (req, res) => {
             exp: now + (60 * 60 * 24) // 1 DIA
         }
 
-        res.json({
+        return res.json({
             ...payload,
             token: jwt.sign(payload, process.env.AUTH_SECRET_KEY)
         })
     } catch {
-        res.status(500).json({ message: 'Erro durante o processamento' })
+        return res.status(500).json({ message: 'Erro durante o processamento' })
     }
 })
 
@@ -54,7 +54,7 @@ router.post('/validateToken', (req, res) => {
     try {
         const { authorization } = req.headers
 
-        if (!authorization) res.status(403).send("Token ausente")
+        if (!authorization) res.status(403).json({message: 'Token ausente'})
 
         const tokenEncrypted = authorization.split([" "])[1]
         const token = jwt.decode(tokenEncrypted)
@@ -62,13 +62,13 @@ router.post('/validateToken', (req, res) => {
         const now = Math.floor(Date.now() / 1000)
 
         if (now > token.exp) {
-            return res.status(403).send('Token Expirado')
+            return res.status(403).json({message: 'Token expirado'})
         }
 
         res.send(true)
 
     } catch {
-        res.send('Erro durante o processamento')
+        res.status(500).json({message: 'Erro durante o processamento'})
     }
 })
 
