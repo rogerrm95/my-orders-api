@@ -21,14 +21,14 @@ router.post('/authenticate', async (req, res) => {
             )
         )
             .then(response => response.data)
-            .catch(() => res.json('Usuário não encontrado')).status(404)
+            .catch(() => res.json({ message: 'Usuário não encontrado' })).status(404)
 
-        if (!data) res.json('Usuário não encontrado').status(404)
+        if (!data) res.json({ message: 'Usuário não encontrado' }).status(404)
 
         const isMatch = bcrypt.compareSync(password, data.password)
 
         if (!isMatch) {
-            res.status(404).json('Senha inválida')
+            res.status(404).json({ message: 'Senha inválida' })
         }
 
         const now = Math.floor(Date.now() / 1000)
@@ -46,7 +46,7 @@ router.post('/authenticate', async (req, res) => {
             token: jwt.sign(payload, process.env.AUTH_SECRET_KEY)
         })
     } catch {
-        res.status(500).json('Erro durante execução, tente novamente')
+        res.status(500).json({ message: 'Erro durante o processamento' })
     }
 })
 
