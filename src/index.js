@@ -6,8 +6,8 @@ import routes from './routes.js'
 const app = express()
 const PORT = process.env.PORT
 
-app.use(bodyParser.json())
 app.use(cors())
+app.use(bodyParser.json())
 
 app.use(express.json({ extended: false }))
 
