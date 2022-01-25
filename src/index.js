@@ -1,7 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import routes from './routes.js'
+
+// Rota //
+import Routes from './routes/index.js'
 
 const app = express()
 const PORT = process.env.PORT
@@ -11,6 +13,6 @@ app.use(bodyParser.json())
 
 app.use(express.json({ extended: false }))
 
-app.use(routes)
+app.use(Routes)
 
 app.listen(PORT || 8080, () => console.log(`Running`))

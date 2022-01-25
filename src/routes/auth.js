@@ -2,14 +2,14 @@ import dotenv from 'dotenv'
 import express from "express"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { q, faunadb } from './services/faunadb.js'
+import { q, faunadb } from '../services/faunadb.js'
 
 dotenv.config()
 
-const router = express.Router()
+const Authenticate = express.Router()
 
 // LOGIN //
-router.post('/authenticate', async (req, res) => {
+Authenticate.post('/authenticate', async (req, res) => {
     const { email, password } = req.body
 
     try {
@@ -50,29 +50,7 @@ router.post('/authenticate', async (req, res) => {
     }
 })
 
-router.post('/validateToken', (req, res) => {
-    try {
-        const { authorization } = req.headers
-
-        if (!authorization) res.status(403).json({message: 'Token ausente'})
-
-        const tokenEncrypted = authorization.split([" "])[1]
-        const token = jwt.decode(tokenEncrypted)
-
-        const now = Math.floor(Date.now() / 1000)
-
-        if (now > token.exp) {
-            return res.status(403).json({message: 'Token expirado'})
-        }
-
-        res.send(true)
-
-    } catch {
-        res.status(500).json({message: 'Erro durante o processamento'})
-    }
-})
-
-export default router;
+export default Authenticate;
 
         // ENCRIPTA A SENHA DO USUARIO //
         // const encryptPassword = (pass) => {
