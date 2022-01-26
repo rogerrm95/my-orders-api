@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from "express"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { q, faunadb } from '../services/faunadb.js'
+import { q, Faunadb } from '../services/faunadb.js'
 
 dotenv.config()
 
@@ -13,7 +13,7 @@ Authenticate.post('/authenticate', async (req, res) => {
     const { email, password } = req.body
 
     try {
-        const data = await faunadb.query(
+        const data = await Faunadb.query(
             q.Get(
                 q.Match(
                     q.Index('user_by_email'), email
@@ -38,7 +38,7 @@ Authenticate.post('/authenticate', async (req, res) => {
             lastname: data.lastname,
             email: data.email,
             iat: now,
-            exp: now + (60 * 60 * 24) // 1 DIA
+            exp: now + (60 * 60 ) // 1 hora //
         }
 
         return res.json({

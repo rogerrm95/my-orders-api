@@ -1,24 +1,26 @@
 import jwt from 'jsonwebtoken';
 
-async function validate(req, res, next) {
+function validate(req, res, next) {
     try {
         const { authorization } = req.headers
 
-        if (!authorization) res.status(403).json({ message: 'Token ausente' })
+        if (!authorization) return res.status(403).send('Token ausente')
 
         const tokenEncrypted = authorization.split([" "])[1]
-        const token = jwt.decode(tokenEncrypted)
-        //jwt.verify
+        const decodedToken = jwt.verify(tokenEncrypted, process.env.AUTH_SECRET_KEY, (err, decodedToken) => {
+            if (err) return res.status(403).json({message: 'Token inválido'})
+
+            return decodedToken
+        })
 
         const now = Math.floor(Date.now() / 1000)
 
-        if (now > token.exp) res.status(403).json({ message: 'Token expirado' })
+        if (now > decodedToken.exp) return res.status(403).json({message: 'Token expirado'})
 
-        return next()
-
+        return next();
     } catch {
-        res.status(500).json({ message: 'Erro durante o processamento' })
+        res.status(500).send('Erro durante o processamento')
     }
 }
 
-export { validate }
+export default validate;

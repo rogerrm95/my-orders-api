@@ -5,9 +5,9 @@ dotenv.config()
 
 const q = fauna.query
 
-const faunadb = new fauna.Client({
+const Faunadb = new fauna.Client({
     secret: process.env.FAUNA_KEY,
     domain: 'db.fauna.com'
 })
 
-export { faunadb, q }
+export { Faunadb, q }
