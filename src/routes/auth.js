@@ -41,7 +41,7 @@ Authenticate.post('/authenticate', async (req, res) => {
             exp: now + (60 * 60 ) // 1 hora //
         }
 
-        return res.json({
+        return res.status(200).json({
             ...payload,
             token: jwt.sign(payload, process.env.AUTH_SECRET_KEY)
         })

@@ -9,8 +9,8 @@ import Users from './users.js'
 
 const Routes = express.Router()
 
-Routes.use(Home)
 Routes.use(Authenticate)
+Routes.use(Home)
 Routes.use(Orders)
 Routes.use(Foods)
 Routes.use(Users)
