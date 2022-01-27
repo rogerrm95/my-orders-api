@@ -15,4 +15,4 @@ app.use(express.json({ extended: false }))
 
 app.use(Routes)
 
-app.listen(PORT || 8080, () => console.log(`Running`))
+app.listen(PORT || 3333, () => console.log(`Running`))

@@ -23,8 +23,15 @@ Users.get('/users', validate, async (req, res, next) => {
 
         const users = usersDB.data.map(user => {
             return {
-                ...user.data,
-                id: user.ref.value.id
+                id: user.ref.value.id,
+                name: user.data.name,
+                lastname: user.data.lastname,
+                birthday: user.data.birthday,
+                phone: user.data.phone,
+                email: user.data.email,
+                job: user.data.job,
+                genre: user.data.genre,
+                amountSales: user.data.amountSales,
             }
         })
 
@@ -34,3 +41,5 @@ Users.get('/users', validate, async (req, res, next) => {
         res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
 })
+
+export default Users;
