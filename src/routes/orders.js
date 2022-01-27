@@ -46,17 +46,18 @@ Orders.post('/orders', validate, async (req, res, next) => {
         )
 
         return res.status(200).json(response)
+
     } catch {
         res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
 })
 
 Orders.patch('/orders/:id', validate, async (req, res, next) => {
-    const id = req.params
+    const { id } = req.params
     const data = req.body
 
     try {
-        await Fauna.query(
+        await Faunadb.query(
             q.Update(
                 q.Select("ref",
                     q.Get(
@@ -71,6 +72,7 @@ Orders.patch('/orders/:id', validate, async (req, res, next) => {
         )
 
         return res.status(204).json({ message: "Pedido atualizado" })
+
     } catch {
         return res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
