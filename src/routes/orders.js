@@ -67,7 +67,7 @@ Orders.patch('/orders/:id', validate, async (req, res, next) => {
                     )
                 ),
                 {
-                    data: { ...data }
+                    data
                 })
         )
 

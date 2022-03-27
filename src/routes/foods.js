@@ -36,5 +36,23 @@ Foods.get('/foods', async (req, res, next) => {
     }
 })
 
+Foods.post('/foods', async (req, res, next) => {
+    const data = req.body
+
+    try {
+        const response = await Faunadb.query(
+            q.Create(
+                q.Collection('foods'),
+                { data }
+            )
+        )
+
+        return res.status(201).json(response)
+    } catch {
+        res.status(500).json({ message: 'Erro interno, tente novamente' })
+    }
+
+})
+
 
 export default Foods;
