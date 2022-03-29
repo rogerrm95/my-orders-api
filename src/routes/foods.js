@@ -20,10 +20,10 @@ Foods.get('/foods', async (req, res, next) => {
                 )
             )
         )
-
+        
         if (!foodsDB) return []
 
-        const foods = foodsDB.data.map(food => food)        
+        const foods = foodsDB.data.map(food => food.data)     
 
         return res.status(200).json(foods)
     } catch {
