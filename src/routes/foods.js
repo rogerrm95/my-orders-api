@@ -23,7 +23,9 @@ Foods.get('/foods', async (req, res, next) => {
 
         if (!foodsDB) return []
 
-        return res.status(200).json(foodsDB)
+        const foods = foodsDB.data.map(food => food)        
+
+        return res.status(200).json(foods)
     } catch {
         return res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
