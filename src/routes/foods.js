@@ -1,10 +1,11 @@
 import express from "express"
 import { q, Faunadb } from '../services/faunadb.js'
+import validate from '../middleware/validateToken.js'
 
 const Foods = express.Router()
 
 // Pratos //
-Foods.get('/foods', async (req, res, next) => {
+Foods.get('/foods', validate, async (req, res, next) => {
     try {
         const foodsDB = await Faunadb.query(
             q.Map(
@@ -31,7 +32,7 @@ Foods.get('/foods', async (req, res, next) => {
     }
 })
 
-Foods.post('/foods', async (req, res, next) => {
+Foods.post('/foods', validate, async (req, res, next) => {
     const data = req.body
 
     try {
@@ -49,7 +50,7 @@ Foods.post('/foods', async (req, res, next) => {
 
 })
 
-Foods.patch('/foods', async (req, res, next) => {
+Foods.patch('/foods', validate, async (req, res, next) => {
     const data = req.body
     const { id } = req.body
 
@@ -79,7 +80,7 @@ Foods.patch('/foods', async (req, res, next) => {
 
 })
 
-Foods.delete('/foods/:id', async (req, res, next) => {
+Foods.delete('/foods/:id', validate ,async (req, res, next) => {
     const { id } = req.params
 
     try {
