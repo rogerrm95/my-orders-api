@@ -20,10 +20,10 @@ Foods.get('/foods', async (req, res, next) => {
                 )
             )
         )
-        
+
         if (!foodsDB) return []
 
-        const foods = foodsDB.data.map(food => food.data)     
+        const foods = foodsDB.data.map(food => food.data)
 
         return res.status(200).json(foods)
     } catch {
@@ -77,6 +77,33 @@ Foods.patch('/foods', async (req, res, next) => {
         res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
 
+})
+
+Foods.delete('/foods/:id', async (req, res, next) => {
+    const { id } = req.params
+
+    try {
+        const refFood = await Faunadb.query(
+            q.Get(
+                q.Match(
+                    q.Index('food_by_id'), id
+                )
+            )
+        ).then((res) => res.ref.value.id)
+            .catch(_ => res.status(404).json({ message: 'Item não encontrado' }))
+
+
+        await Faunadb.query(
+            q.Delete(
+                q.Ref(q.Collection('foods'), refFood)
+            )
+        )
+
+        return res.status(201).json({ message: 'Item excluído' })
+
+    } catch {
+        return res.status(500).json({ message: 'Erro interno, tente novamente' })
+    }
 })
 
 
