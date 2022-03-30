@@ -24,7 +24,8 @@ Authenticate.post('/authenticate', async (req, res) => {
             .catch(() => res.status(404).json({ message: 'Usuário não encontrado' }))
 
         if (!data) res.status(404).json({ message: 'Usuário não encontrado' })
-
+        if (!data.isActive) res.status(401).json({message: 'Usuário inativado pelo administrador'})
+        
         const isMatch = bcrypt.compareSync(password, data.password)
 
         if (!isMatch) {
