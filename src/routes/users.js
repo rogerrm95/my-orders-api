@@ -42,4 +42,49 @@ Users.get('/users', validate, async (req, res, next) => {
     }
 })
 
+Users.post('/users', validate, async (req, res, next) => {
+    const user = req.body
+
+    try {
+        await Faunadb.query(
+            q.Create(
+                q.Collection('users'),
+                { user }
+            )
+        )
+
+        return res.status(201).json({ message: 'Usuário criado' })
+
+    } catch {
+        res.status(500).json({ messagem: 'Erro interno, tente novamente' })
+    }
+})
+
+Users.patch('/users', validate, async (req, res, next) => {
+    const data = req.body
+    const email = data.email
+
+    try {
+        await Faunadb.query(
+            q.Update(
+                q.Select('ref',
+                    q.Get(
+                        q.Match(
+                            q.Index('user_by_email'), email
+                        )
+                    )
+                ), { data }
+            )
+        ).then(res => {
+            return res.data
+        }).catch(_ => res.status(404).json({ message: 'Usuário não encontrado' }))
+
+
+        return res.status(201).json({ message: "Dados atualizados" })
+
+    } catch {
+        res.status(500).json({ messagem: 'Erro interno, tente novamente' })
+    }
+})
+
 export default Users;
