@@ -27,11 +27,12 @@ Users.get('/users', validate, async (req, res, next) => {
                 name: user.data.name,
                 lastname: user.data.lastname,
                 birthday: user.data.birthday,
-                phone: user.data.phone,
+                phone: user.data.phone ? user.data.phone : '',
                 email: user.data.email,
                 job: user.data.job,
                 genre: user.data.genre,
                 amountSales: user.data.amountSales,
+                isActive: user.data.isActive
             }
         })
 
