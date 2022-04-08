@@ -21,6 +21,8 @@ Users.get('/users', validate, async (req, res, next) => {
             )
         )
 
+        if (!usersDB) return []
+
         const users = usersDB.data.map(user => {
             return {
                 id: user.ref.value.id,
