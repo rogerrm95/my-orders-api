@@ -63,13 +63,13 @@ Users.get('/users/:ref', validate, async (req, res, next) => {
             )
 
         ).then(res => res.data)
-        .catch(_ => {
-            res.status(404).json({message: 'Usuário não encontrado'})
-        })
+            .catch(_ => {
+                res.status(404).json({ message: 'Usuário não encontrado' })
+            })
 
         res.status(200).json(userFromDB)
     } catch (error) {
-        res.status(500).json({message: 'Erro interno, tente novamente'})
+        res.status(500).json({ message: 'Erro interno, tente novamente' })
     }
 })
 
@@ -91,9 +91,9 @@ Users.post('/users', validate, async (req, res, next) => {
     }
 })
 
-Users.put('/users', validate, async (req, res, next) => {
+Users.put('/users/:ref', validate, async (req, res, next) => {
     const data = req.body
-    const email = req.body.email
+    const { ref } = req.params
 
     if (data.password) {
         // Encripta a senha //
@@ -107,8 +107,8 @@ Users.put('/users', validate, async (req, res, next) => {
             q.Update(
                 q.Select('ref',
                     q.Get(
-                        q.Match(
-                            q.Index('user_by_email'), email
+                        q.Ref(
+                            q.Collection("users"), ref
                         )
                     )
                 ), { data }
