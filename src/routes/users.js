@@ -126,4 +126,23 @@ Users.put('/users/:ref', validate, async (req, res, next) => {
     }
 })
 
+Users.delete('/users/:id', validate, async (req, res, next) => {
+    const { id } = req.params
+
+    try {
+        const response = await Faunadb.query(
+            q.Delete(
+                q.Ref(q.Collection('users'), id)
+            )
+        ).then(res => {
+            return res.data
+        }).catch(_ => res.status(404).json({ message: 'Usuário não encontrado' }))
+
+        return res.status(201).json(response)
+
+    } catch {
+        res.status(500).json({ messagem: 'Erro interno, tente novamente' })
+    }
+})
+
 export default Users;
