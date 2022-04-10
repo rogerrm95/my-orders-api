@@ -74,17 +74,18 @@ Users.get('/users/:ref', validate, async (req, res, next) => {
 })
 
 Users.post('/users', validate, async (req, res, next) => {
-    const user = req.body
+    const data = req.body
+    console.log(data)
 
     try {
-        await Faunadb.query(
+        const response = await Faunadb.query(
             q.Create(
                 q.Collection('users'),
-                { user }
+                { data }
             )
         )
 
-        return res.status(201).json({ message: 'Usuário criado' })
+        return res.status(200).json(response)
 
     } catch {
         res.status(500).json({ messagem: 'Erro interno, tente novamente' })
