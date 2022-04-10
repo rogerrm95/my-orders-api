@@ -1,8 +1,14 @@
+import bcrypt from 'bcrypt'
 import express from 'express'
 import validate from '../middleware/validateToken.js'
 import { q, Faunadb } from '../services/faunadb.js'
 
 const Users = express.Router()
+
+const encryptPassword = (pass) => {
+    const salt = bcrypt.genSaltSync(10)
+    return bcrypt.hashSync(pass, salt)
+}
 
 Users.get('/users', validate, async (req, res, next) => {
     try {
@@ -24,6 +30,7 @@ Users.get('/users', validate, async (req, res, next) => {
         if (!usersDB) return []
 
         const users = usersDB.data.map(user => {
+            console.log(user)
             return {
                 id: user.ref.value.id,
                 name: user.data.name,
@@ -34,7 +41,7 @@ Users.get('/users', validate, async (req, res, next) => {
                 job: user.data.job,
                 genre: user.data.genre,
                 amountSales: user.data.amountSales,
-                isActive: user.data.isActive
+                isActive: user.data.isActive,
             }
         })
 
@@ -63,9 +70,16 @@ Users.post('/users', validate, async (req, res, next) => {
     }
 })
 
-Users.patch('/users', validate, async (req, res, next) => {
+Users.put('/users', validate, async (req, res, next) => {
     const data = req.body
-    const email = data.email
+    const email = req.body.email
+
+    if (data.password) {
+        // Encripta a senha //
+        data.password = encryptPassword(data.password)
+    } else {
+        delete data.password
+    }
 
     try {
         await Faunadb.query(

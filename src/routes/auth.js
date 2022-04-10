@@ -52,11 +52,3 @@ Authenticate.post('/authenticate', async (req, res) => {
 })
 
 export default Authenticate;
-
-        // ENCRIPTA A SENHA DO USUARIO //
-        // const encryptPassword = (pass) => {
-        //     const salt = bcrypt.genSaltSync(10)
-        //     return bcrypt.hashSync(pass, salt)
-        // }
-
-        // const securePassword = encryptPassword(password)
