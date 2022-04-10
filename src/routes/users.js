@@ -30,7 +30,6 @@ Users.get('/users', validate, async (req, res, next) => {
         if (!usersDB) return []
 
         const users = usersDB.data.map(user => {
-            console.log(user)
             return {
                 id: user.ref.value.id,
                 name: user.data.name,
@@ -49,6 +48,28 @@ Users.get('/users', validate, async (req, res, next) => {
 
     } catch {
         res.status(500).json({ message: 'Erro interno, tente novamente' })
+    }
+})
+
+Users.get('/users/:ref', validate, async (req, res, next) => {
+    try {
+        const { ref } = req.params
+
+        const userFromDB = await Faunadb.query(
+            q.Get(
+                q.Ref(
+                    q.Collection("users"), ref
+                )
+            )
+
+        ).then(res => res.data)
+        .catch(_ => {
+            res.status(404).json({message: 'Usuário não encontrado'})
+        })
+
+        res.status(200).json(userFromDB)
+    } catch (error) {
+        res.status(500).json({message: 'Erro interno, tente novamente'})
     }
 })
 
