@@ -20,11 +20,13 @@ Foods.get('/foods', validate, async (req, res, next) => {
                     )
                 )
             )
-        ).then(res => {
-            return res.data.map(food => food.data)
-        })
-
-        if (!foodsDB) return []
+        )
+            .then(response => {
+                return response.data.map(food => food.data)
+            })
+            .catch(_ => {
+                return res.status(404).json({ message: 'Dados não encontrados' })
+            })
 
         return res.status(200).json(foodsDB)
     } catch {
@@ -80,7 +82,7 @@ Foods.patch('/foods', validate, async (req, res, next) => {
 
 })
 
-Foods.delete('/foods/:id', validate ,async (req, res, next) => {
+Foods.delete('/foods/:id', validate, async (req, res, next) => {
     const { id } = req.params
 
     try {
