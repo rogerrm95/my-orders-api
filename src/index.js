@@ -1,18 +1,17 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import cors from 'cors'
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 // Rota //
-import Routes from './routes/index.js'
+import Routes from './routes/index.js';
 
-const app = express()
-const PORT = process.env.PORT
+const app = express();
 
-app.use(cors())
-app.use(bodyParser.json())
+app.use(cors());
+app.use(bodyParser.json());
 
-app.use(express.json({ extended: false }))
+app.use(express.json({ extended: false }));
 
-app.use(Routes)
+app.use(Routes);
 
-app.listen(PORT || 3333, () => console.log(`Running`))
+app.listen(3333, () => console.log(`Running`));

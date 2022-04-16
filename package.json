@@ -20,7 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.6.0",
     "express": "^4.17.2",
-    "faunadb": "^4.4.1",
+    "faunadb": "^4.5.4",
     "jsonwebtoken": "^8.5.1",
     "npm": "^7.24.2"
   },
