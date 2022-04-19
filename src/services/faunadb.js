@@ -7,7 +7,9 @@ const q = fauna.query
 
 const Faunadb = new fauna.Client({
     secret: process.env.FAUNA_KEY,
-    domain: 'db.fauna.com'
+    domain: 'db.us.fauna.com',
+    scheme: 'https',
+    port: 443
 })
 
 export { Faunadb, q }
