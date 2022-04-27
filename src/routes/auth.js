@@ -39,7 +39,7 @@ Authenticate.post('/authenticate', async (req, res) => {
             lastname: data.lastname,
             email: data.email,
             iat: now,
-            exp: now + (60 * 60 ) // 1 hora //
+            exp: now + (60 * 60 * 2 ) // 2 hora //
         }
 
         return res.status(200).json({
