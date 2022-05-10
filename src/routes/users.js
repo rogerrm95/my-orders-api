@@ -83,13 +83,15 @@ Users.post('/users', validate, async (req, res, next) => {
                 { data }
             )
         ).then(res => {
-            return {
+            const data = {
                 ...res.data,
                 id: res.ref.id
             }
-        })
 
-        delete response.data.password
+            delete data.password
+
+            return data
+        })
 
         return res.status(200).json(response)
 
