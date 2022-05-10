@@ -75,15 +75,19 @@ Users.get('/users/:ref', validate, async (req, res, next) => {
 
 Users.post('/users', validate, async (req, res, next) => {
     const data = req.body
-    console.log(data)
-
+    
     try {
         const response = await Faunadb.query(
             q.Create(
                 q.Collection('users'),
                 { data }
             )
-        )
+        ).then(res => {
+            return {
+                ...res.data,
+                id: res.ref.id
+            }
+        })
 
         return res.status(200).json(response)
 

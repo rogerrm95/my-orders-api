@@ -21,7 +21,8 @@ Authenticate.post('/authenticate', async (req, res) => {
             )
         )
             .then(response => response.data)
-            .catch(() => res.status(404).json({ message: 'Usuário não encontrado' }))
+            .catch(() => res.status(404).json({ message: 'Usuário não encontrado' })
+        )
 
         if (!data) res.status(404).json({ message: 'Usuário não encontrado' })
         if (!data.isActive) res.status(401).json({message: 'Usuário inativado pelo administrador'})
