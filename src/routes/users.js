@@ -89,6 +89,8 @@ Users.post('/users', validate, async (req, res, next) => {
             }
         })
 
+        delete response.data.password
+
         return res.status(200).json(response)
 
     } catch {
