@@ -112,7 +112,7 @@ Users.put('/users/:ref', validate, async (req, res, next) => {
     }
 
     try {
-        await Faunadb.query(
+        const response = await Faunadb.query(
             q.Update(
                 q.Select('ref',
                     q.Get(
@@ -122,12 +122,11 @@ Users.put('/users/:ref', validate, async (req, res, next) => {
                     )
                 ), { data }
             )
-        ).then(res => {
-            return res.data
-        }).catch(_ => res.status(404).json({ message: 'Usuário não encontrado' }))
+        )
+        .then(res => res.data)
+        .catch(_ => res.status(404).json({ message: 'Usuário não encontrado' }))
 
-
-        return res.status(201).json({ message: "Dados atualizados" })
+        return res.status(201).json(response)
 
     } catch {
         res.status(500).json({ messagem: 'Erro interno, tente novamente' })
