@@ -39,6 +39,7 @@ Authenticate.post('/authenticate', async (req, res) => {
             name: data.name,
             lastname: data.lastname,
             email: data.email,
+            job: data.job,
             iat: now,
             exp: now + (60 * 60 * 2 ) // 2 hora //
         }
